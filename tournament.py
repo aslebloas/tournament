@@ -51,11 +51,11 @@ def countPlayers():
 def registerPlayer(name):
     """Adds a player to the tournament database.
 
-    The database assigns a unique serial id number for the player.  (This
-    should be handled by your SQL database schema, not in your Python code.)
+    The database assigns a unique serial id number for the player.
+    Use of bleach.clean() method against SQL injection attacks.
 
     Args:
-      name: the player's full name (need not be unique).
+      name: the player's full name.
     """
     conn = connect()
     c = conn.cursor()
@@ -67,7 +67,7 @@ def registerPlayer(name):
 def playerStandings():
     """Returns a list of the players and their win records, sorted by wins.
 
-    The first entry in the list should be the player in first place, \
+    The first entry in the list is the player in first place, \
     or a player tied for first place if there is currently a tie.
 
     Returns:
@@ -79,19 +79,7 @@ def playerStandings():
     """
     conn = connect()
     c = conn.cursor()
-    c.execute("""SELECT id,
-        name,
-        (SELECT count(*)
-            FROM matches
-            WHERE players.id=matches.winner)
-            AS wins,
-        (SELECT count(*)
-            FROM matches
-            WHERE players.id=matches.winner
-            OR players.id=matches.loser)
-            AS matches
-        FROM players
-        ORDER BY wins DESC;""")
+    c.execute("SELECT * FROM standings_view;")
     standings = c.fetchall()
     return standings
     conn.close()
@@ -127,9 +115,6 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
-    conn = connect()
-    c = conn.cursor()
-    c.execute("""SELECT id, name FROM standings_view;""")
     pairings = []
     standings = playerStandings()
     i = 1
@@ -141,4 +126,3 @@ def swissPairings():
             player2[0], player1[1])))
         i += 2
     return pairings
-    conn.close()
