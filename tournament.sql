@@ -6,7 +6,10 @@ CREATE DATABASE tournament;
 \c tournament
 
 -- Players Table
-CREATE TABLE players ( id SERIAL PRIMARY KEY, name TEXT );
+CREATE TABLE players (
+    id SERIAL PRIMARY KEY,
+    name TEXT
+    );
 
 -- Matches Table
 CREATE TABLE matches ( 
