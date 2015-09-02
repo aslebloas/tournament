@@ -11,8 +11,6 @@ import bleach
 # Database connection
 import psycopg2
 
-tournament = []
-
 
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
@@ -23,7 +21,7 @@ def deleteMatches():
     """Remove all the match records from the database."""
     conn = connect()
     c = conn.cursor()
-    c.execute("delete from matches;")
+    c.execute("DELETE FROM matches;")
     conn.commit()
     conn.close()
 
@@ -42,10 +40,9 @@ def countPlayers():
     conn = connect()
     c = conn.cursor()
     c.execute("SELECT COUNT(id) FROM players;")
-    rows = c.fetchall()
-    for row in rows:
-        return row[0]
+    rows = c.fetchone()
     conn.close()
+    return int(rows[0])
 
 
 def registerPlayer(name):
@@ -81,8 +78,8 @@ def playerStandings():
     c = conn.cursor()
     c.execute("SELECT * FROM standings_view;")
     standings = c.fetchall()
-    return standings
     conn.close()
+    return standings
 
 
 def reportMatch(winner, loser):

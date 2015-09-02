@@ -1,5 +1,10 @@
 -- Table definitions for the tournament project.
 
+-- Delete database if it already exists
+DROP DATABASE IF EXISTS tournament;
+CREATE DATABASE tournament;
+\c tournament
+
 -- Players Table
 CREATE TABLE players ( id SERIAL PRIMARY KEY, name TEXT );
 
